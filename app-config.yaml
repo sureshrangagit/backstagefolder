@@ -1,0 +1,67 @@
+app:
+  title: Scaffolded Backstage App
+  baseUrl: http://3.91.203.26:3000
+  listen:
+    host: 0.0.0.0
+
+organization:
+  name: My Company
+
+backend:
+  baseUrl: http://3.91.203.26:7007
+  listen:
+    port: 7007
+    host: 0.0.0.0
+  csp:
+    connect-src: ["'self'", 'http:', 'https:']
+  cors:
+    origin: http://3.91.203.26:3000
+    methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
+    credentials: true
+  database:
+    client: better-sqlite3
+    connection: ':memory:'
+
+integrations:
+  github:
+    - host: github.com
+      token: ${GITHUB_TOKEN}
+
+proxy: {}
+
+techdocs:
+  builder: 'local'
+  generator:
+    runIn: 'local'
+  publisher:
+    type: 'local'
+
+auth:
+  environment: development
+  providers:
+    github:
+      development:
+        clientId: ${AUTH_GITHUB_CLIENT_ID}
+        clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+        signIn:
+          resolvers:
+            - resolver: usernameMatchingUserEntityName
+    # guest: {}
+
+scaffolder: {}
+
+catalog:
+  rules:
+    - allow: [Group, User, Component, System, API, Resource, Location]
+  locations:
+    - type: file
+      target: /app/rsk-backstage/catalog/entities/users.yaml   # ✅ Ensure this path is relative to the backend working directory
+
+  useUrlReadersSearch: true
+
+kubernetes:
+
+permission:
+  enabled: true
+
+
